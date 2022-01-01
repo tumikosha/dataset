@@ -1,9 +1,10 @@
 from datetime import datetime, date
 
-from sqlalchemy import Integer, UnicodeText, Float, BigInteger
+from sqlalchemy import Integer, UnicodeText, Float, BigInteger, Numeric
 from sqlalchemy import String, Boolean, Date, DateTime, Unicode, JSON
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.types import TypeEngine, _Binary
+import  string, decimal
 
 MYSQL_LENGTH_TYPES = (String, _Binary)
 
@@ -19,6 +20,7 @@ class Types(object):
     boolean = Boolean
     date = Date
     datetime = DateTime
+    decimal = Numeric
 
     def __init__(self, is_postgres=None):
         self.json = JSONB if is_postgres else JSON
@@ -43,4 +45,7 @@ class Types(object):
             return self.date
         elif isinstance(sample, dict):
             return self.json
+        elif isinstance(sample, decimal):
+            return self.decimal
+
         return self.text
